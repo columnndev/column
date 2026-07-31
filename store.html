@@ -279,9 +279,8 @@
         }
 
         const ka = (body) => fetch('https://api.column.wtf/keyauth', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }).then(r => r.json());
-        const OWNER_KEY = 'owner-8ivWfL-DGBLsO';
         const savedKey = localStorage.getItem('saved_license');
-        const isOwner = savedKey === OWNER_KEY;
+        const isOwner = localStorage.getItem('column_is_owner') === 'true';
         let currentSessionId = null, currentBalance = 0, ownedItems = [];
         let pendingItem = null;
 

@@ -470,6 +470,7 @@
                 if (result.success) {
                     // Success!
                     localStorage.setItem('saved_license', key);
+                    localStorage.setItem('column_is_owner', result.isOwner ? 'true' : 'false');
 
                     let expiryTimestamp = null;
                     if (result.info && result.info.subscriptions && result.info.subscriptions.length > 0) {
@@ -691,6 +692,7 @@
 
         logoutBtn.addEventListener('click', () => {
             localStorage.removeItem('saved_license');
+            localStorage.removeItem('column_is_owner');
             licenseKeyInput.value = '';
             dashboardView.style.display = 'none';
             setUsernameView.style.display = 'none';
@@ -744,7 +746,6 @@
 
         // ── Orders ────────────────────────────────────────────────────────────
         const ORDERS_REPO_API = 'https://api.github.com/repos/columnndev/column/contents/orders';
-        const OWNER_KEY = 'owner-8ivWfL-DGBLsO';
 
         function statusBadge(status) {
             if (status === 'done') {
@@ -779,7 +780,7 @@
             const savedKey = localStorage.getItem('saved_license');
             if (!savedKey) return;
 
-            const isOwner = savedKey === OWNER_KEY;
+            const isOwner = localStorage.getItem('column_is_owner') === 'true';
             const listEl = document.getElementById('orders-list');
             if (!listEl) return;
             listEl.innerHTML = '<div style="color:rgba(255,255,255,0.25);font-size:0.82rem;text-align:center;padding:1rem 0;">Loading...</div>';

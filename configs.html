@@ -463,12 +463,9 @@
             setInterval(drawRain, 35);
         }
 
-        // Owner key — same key used across all pages
-        const OWNER_KEY = 'owner-8ivWfL-DGBLsO';
-
         // Check if logged in via saved license
         const savedKey = localStorage.getItem('saved_license');
-        const isAdmin = savedKey === OWNER_KEY;
+        const isAdmin = localStorage.getItem('column_is_owner') === 'true';
         const authGate      = document.getElementById('auth-gate');
         const configsContent = document.getElementById('configs-content');
         const configGrid    = document.getElementById('config-grid');
