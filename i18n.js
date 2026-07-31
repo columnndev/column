@@ -142,10 +142,10 @@
     'Questions?':           { ar: 'أسئلة؟',           fr: 'questions ?',    zh: '疑问？' },
     'Everything you need to know.': { ar: 'كل ما تحتاج معرفته.', fr: 'Tout ce qu\'il faut savoir.', zh: '您需要知道的一切。' },
     'How quickly do I receive my key?': { ar: 'كم يستغرق وصول المفتاح؟', fr: 'Sous combien de temps vais-je recevoir ma clé ?', zh: '多久能收到我的密钥？' },
-    'Delivery is 100% automated. Your key and the private loader download link are sent to your email instantly upon successful payment verification.': {
-      ar: 'التسليم آلي بالكامل. يصلك المفتاح ورابط تحميل اللودر الخاص على بريدك الإلكتروني فور تأكيد الدفع.',
-      fr: 'La livraison est 100 % automatisée. Votre clé et le lien de téléchargement du loader privé sont envoyés par e-mail dès la validation du paiement.',
-      zh: '发货 100% 自动化。付款验证通过后，密钥与私有加载器下载链接会立即发送到您的邮箱。' },
+    'All purchases are currently handled through our Discord. Open a ticket and a staff member will take care of your order and hand over your key and loader access as fast as we can — usually within minutes.': {
+      ar: 'جميع عمليات الشراء تتم حالياً عبر سيرفر الديسكورد. افتح تذكرة وسيتولى أحد الموظفين طلبك ويسلّمك المفتاح والوصول إلى اللودر بأسرع ما يمكن — عادةً خلال دقائق.',
+      fr: 'Tous les achats passent actuellement par notre Discord. Ouvrez un ticket et un membre du staff traitera votre commande et vous remettra votre clé et l\'accès au loader aussi vite que possible — généralement en quelques minutes.',
+      zh: '目前所有购买均通过我们的 Discord 处理。提交工单后，工作人员会处理您的订单，并尽快将密钥与加载器权限交付给您——通常在几分钟内完成。' },
     'Is it safe for my main account?': { ar: 'هل هو آمن على حسابي الأساسي؟', fr: 'Est-ce sûr pour mon compte principal ?', zh: '在我的主账号上使用安全吗？' },
     'We never suggest you cheat on your main account. Even though we try our absolute best to make our product safe, cheating always carries an inherent risk. Use at your own risk.': {
       ar: 'لا ننصح أبداً باستخدامه على حسابك الأساسي. ورغم بذلنا أقصى جهد لجعل المنتج آمناً، يبقى الغش محفوفاً بالمخاطر دائماً. الاستخدام على مسؤوليتك الخاصة.',
@@ -210,10 +210,10 @@
     'Use an aged Overwatch 1 account when possible, OR': { ar: 'استخدم حساب Overwatch 1 قديماً إن أمكن، أو', fr: 'Utilisez un ancien compte Overwatch 1 si possible, OU', zh: '尽可能使用老的《守望先锋 1》账号，或者' },
     'Warm up a fresh OW2 account with clean playtime first.': { ar: 'جهّز حساب OW2 جديداً بساعات لعب نظيفة أولاً.', fr: 'Préparez un nouveau compte OW2 avec du temps de jeu propre d\'abord.', zh: '先用干净的游戏时长养一个新的 OW2 账号。' },
     'Combined with our internal, this keeps attention extremely low.': { ar: 'مع برنامجنا الداخلي، هذا يبقي الانتباه إليك منخفضاً جداً.', fr: 'Combiné à notre internal, cela maintient l\'attention à un niveau très faible.', zh: '配合我们的内部辅助，可以将关注度降到极低。' },
-    'If you have questions about safe usage or account setup, open a ticket via Crisp. Our team is here 24/7 for approved members.': {
-      ar: 'إذا كان لديك أي سؤال حول الاستخدام الآمن أو تجهيز الحساب، افتح تذكرة عبر Crisp. فريقنا متواجد على مدار الساعة للأعضاء المعتمدين.',
-      fr: 'Pour toute question sur l\'usage sûr ou la configuration de compte, ouvrez un ticket via Crisp. Notre équipe est là 24/7 pour les membres approuvés.',
-      zh: '如果您对安全使用或账号设置有疑问，请通过 Crisp 提交工单。我们的团队全天候为已认证会员服务。' },
+    'If you have questions about safe usage or account setup, open a ticket in our Discord. Our team is here 24/7 for approved members.': {
+      ar: 'إذا كان لديك أي سؤال حول الاستخدام الآمن أو تجهيز الحساب، افتح تذكرة في سيرفر الديسكورد. فريقنا متواجد على مدار الساعة للأعضاء المعتمدين.',
+      fr: 'Pour toute question sur l\'usage sûr ou la configuration de compte, ouvrez un ticket sur notre Discord. Notre équipe est là 24/7 pour les membres approuvés.',
+      zh: '如果您对安全使用或账号设置有疑问，请在我们的 Discord 提交工单。我们的团队全天候为已认证会员服务。' },
     '⚠ Backtrack Warning:': { ar: '⚠ تحذير بخصوص Backtrack:', fr: '⚠ Avertissement Backtrack :', zh: '⚠ Backtrack 警告：' },
     'We strongly recommend keeping Backtrack values': { ar: 'ننصح بشدة بإبقاء قيم Backtrack', fr: 'Nous recommandons fortement de garder des valeurs Backtrack', zh: '我们强烈建议将 Backtrack 数值保持在' },
     'low':                  { ar: 'منخفضة',           fr: 'basses',         zh: '较低水平' },
