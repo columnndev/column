@@ -92,10 +92,13 @@
     'SYSTEM ONLINE':        { ar: 'النظام يعمل',      fr: 'SYSTÈME EN LIGNE', zh: '系统在线' },
     'Experience':           { ar: 'اختبر',            fr: 'Découvrez la',   zh: '体验' },
     'Absolute Dominance':   { ar: 'السيطرة المطلقة',  fr: 'Domination absolue', zh: '绝对统治' },
-    'The most advanced, undetected, and feature-rich utility for Overwatch. Dominate the ladder with flawless predictive aiming and unbeatable security.': {
-      ar: 'الأداة الأكثر تطوراً وأماناً وثراءً بالمميزات للعبة Overwatch. تصدّر التصنيف بتصويب تنبؤي مثالي وحماية لا تُخترق.',
-      fr: 'L\'utilitaire le plus avancé, indétecté et complet pour Overwatch. Dominez le classement avec une visée prédictive parfaite et une sécurité imbattable.',
-      zh: '最先进、最安全、功能最丰富的 Overwatch 辅助工具。凭借完美的预判瞄准与无懈可击的安全性统治排位。' },
+    'Column is currently the only semi-public provider that still hasn\'t taken a wave — while the rest go dark, roll back builds, or leave their users banned and waiting. We stay up through every patch and every ban sweep, backed by flawless predictive aiming and kernel-level security that holds.': {
+      ar: 'Column حالياً هو المزوّد شبه العام الوحيد الذي لم تطله أي موجة حظر — بينما يختفي الآخرون أو يتراجعون عن إصداراتهم أو يتركون مستخدميهم محظورين في الانتظار. نبقى متاحين بعد كل تحديث وكل حملة حظر، مدعومين بتصويب تنبؤي مثالي وحماية على مستوى النواة لا تنكسر.',
+      fr: 'Column est aujourd\'hui le seul fournisseur semi-public à n\'avoir subi aucune vague de bans — pendant que les autres disparaissent, annulent leurs mises à jour ou laissent leurs utilisateurs bannis et sans réponse. Nous restons en ligne après chaque patch et chaque vague, portés par une visée prédictive parfaite et une sécurité noyau qui tient.',
+      zh: 'Column 是目前唯一一家仍未被封号潮波及的半公开提供商——其他家要么停服、要么回滚版本、要么让用户封号后无人过问。每一次补丁、每一轮封号潮之后我们依旧在线，配以完美的预判瞄准与坚不可摧的内核级防护。' },
+    'No ban wave since launch': { ar: 'لا موجة حظر منذ الإطلاق', fr: 'Aucune vague de bans depuis le lancement', zh: '上线至今零封号潮' },
+    'Same-day updates after every patch': { ar: 'تحديث في نفس يوم صدور الباتش', fr: 'Mise à jour le jour même de chaque patch', zh: '每次补丁当天即更新' },
+    'Kernel-level protection': { ar: 'حماية على مستوى النواة', fr: 'Protection au niveau noyau', zh: '内核级防护' },
     'View Plans':           { ar: 'عرض الباقات',      fr: 'Voir les offres', zh: '查看套餐' },
     'Discover Features':    { ar: 'استكشف المميزات',  fr: 'Découvrir les fonctionnalités', zh: '了解功能' },
     'users online right now': { ar: 'مستخدم متصل الآن', fr: 'utilisateurs en ligne actuellement', zh: '位用户正在线' },
