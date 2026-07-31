@@ -531,33 +531,34 @@ h1, h2, h3, h4, .logo {
 }
 
 .hero-subtitle {
-    font-size: 1.05rem;
+    font-size: 0.98rem;
     color: var(--text-secondary);
     margin-bottom: 1.75rem;
-    max-width: 560px;
-    line-height: 1.7;
+    max-width: 620px;
+    line-height: 1.65;
 }
 
 .hero-proof {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
-    max-width: 620px;
+    gap: 8px;
+    max-width: 660px;
     margin-bottom: 2.5rem;
 }
 
 .proof-chip {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 6px 14px;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    gap: 7px;
+    padding: 6px 13px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 99px;
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     font-weight: 500;
-    color: var(--text-secondary);
+    letter-spacing: 0.01em;
+    color: var(--text-muted);
     backdrop-filter: blur(10px);
     white-space: nowrap;
 }
