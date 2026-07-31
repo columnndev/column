@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Column - News</title>
+
+    <!-- Discord / Social Media Meta Tags -->
+    <meta property="og:title" content="Column | News &amp; Updates">
+    <meta property="og:description" content="Development updates, feature releases and announcements from the Column team.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/columnndev/column/main/logo.png">
+    <meta property="og:url" content="https://columnndev.github.io/column/news.html">
+    <meta name="theme-color" content="#4f46e5">
+
+    <!-- Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="security.js"></script>
+    <script src="config.js?v=2"></script>
+    <style>
+        .news-container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 10rem 24px 6rem 24px;
+        }
+
+        .news-wrap {
+            width: 100%;
+            max-width: 760px;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .news-header { text-align: center; }
+
+        .news-header h1 {
+            font-size: 2.6rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+        }
+
+        .news-header p { color: var(--text-muted); font-size: 0.95rem; }
+
+        .news-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 14px;
+            padding: 1.8rem;
+            transition: border-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .news-item:hover {
+            border-color: rgba(124, 58, 237, 0.35);
+            transform: translateY(-2px);
+        }
+
+        .news-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.9rem;
+        }
+
+        .news-tag {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 0.28rem 0.6rem;
+            border-radius: 999px;
+        }
+
+        .tag-soon {
+            color: #f59e0b;
+            background: rgba(245, 158, 11, 0.12);
+            border: 1px solid rgba(245, 158, 11, 0.25);
+        }
+
+        .tag-dev {
+            color: #818cf8;
+            background: rgba(124, 58, 237, 0.12);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+        }
+
+        .news-date { font-size: 0.78rem; color: var(--text-muted); }
+
+        .news-item h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.7rem;
+        }
+
+        .news-item p {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            line-height: 1.8;
+            margin-bottom: 0.8rem;
+        }
+
+        .news-item p:last-of-type { margin-bottom: 0; }
+
+        .news-sign {
+            margin-top: 1.2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        .news-sign strong { color: var(--text-main); }
+
+        .news-note {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .news-note a { color: #818cf8; text-decoration: none; }
+        .news-note a:hover { text-decoration: underline; }
+
+        @media (max-width: 600px) {
+            .news-container { padding-top: 8rem; }
+            .news-header h1 { font-size: 2rem; }
+            .news-item { padding: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="ambient-background">
+        <canvas id="rain-canvas"></canvas>
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+        <div class="glow-orb orb-3"></div>
+    </div>
+
+    <!-- Navbar -->
+    <header class="navbar" data-aos="fade-down" data-aos-duration="800">
+        <div class="nav-container">
+            <div class="logo-wrapper" style="display: flex; align-items: center; gap: 0.8rem;">
+                <img src="logo.png" alt="Column Logo" class="logo-img" style="height: 40px; width: auto; object-fit: contain; mix-blend-mode: screen;">
+                <span class="logo">COLUMN</span>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html#home">Home</a>
+                <a href="index.html#features">Features</a>
+                <a href="index.html#pricing">Pricing</a>
+                <a href="index.html#faq">FAQ</a>
+                <a href="news.html" style="color: white;">News</a>
+                <a href="status.html">Status</a>
+            </nav>
+            <div class="nav-actions">
+                <a href="login.html" class="btn-secondary desktop-only">Portal</a>
+                <a href="index.html#pricing" class="btn-primary desktop-only">Purchase</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="news-container">
+        <div class="news-wrap">
+            <div class="news-header" data-aos="fade-up" data-aos-duration="1000">
+                <h1>News &amp; <span class="text-gradient">Updates</span></h1>
+                <p>What we are building right now.</p>
+            </div>
+
+            <article class="news-item" data-aos="fade-up" data-aos-delay="100">
+                <div class="news-meta">
+                    <span class="news-tag tag-soon">Coming Soon</span>
+                    <span class="news-date">31 July 2026</span>
+                </div>
+                <h2>Backtrack is close to release</h2>
+                <p>Backtrack is nearly ready. We are running the last round of checks to make sure it is stable and safe across all systems before we ship it.</p>
+                <p>We would rather hold it a few more days than push something that behaves differently on someone else's setup. Please be patient — it is coming.</p>
+                <div class="news-sign">— <strong>/column</strong> &amp; <strong>/pluto</strong></div>
+            </article>
+
+            <article class="news-item" data-aos="fade-up" data-aos-delay="200">
+                <div class="news-meta">
+                    <span class="news-tag tag-dev">In Development</span>
+                    <span class="news-date">31 July 2026</span>
+                </div>
+                <h2>Reworking all ability features</h2>
+                <p>We are currently improving <strong style="color: var(--text-main);">all</strong> auto ability and ability features across every hero — better targeting, smoother aim, and more reliable cooldown handling.</p>
+                <p>This is a broad pass rather than a single hero fix, so expect ability behaviour to get noticeably sharper over the next updates.</p>
+                <div class="news-sign">— <strong>/column</strong> &amp; <strong>/pluto</strong></div>
+            </article>
+
+            <p class="news-note" data-aos="fade-up" data-aos-delay="300">
+                Live updates and ETAs are posted in our
+                <a href="https://discord.gg/ybzqWHPaFH" target="_blank" rel="noopener">Discord</a>.
+            </p>
+        </div>
+    </main>
+
+    <!-- Matrix Rain Canvas Script -->
+    <script>
+        const canvas = document.getElementById('rain-canvas');
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+
+            const characters = '01ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*'.split('');
+            const fontSize = 16;
+            let columns = width / fontSize;
+            let drops = [];
+            for (let x = 0; x < columns; x++) { drops[x] = 1; }
+
+            function drawRain() {
+                ctx.fillStyle = 'rgba(5, 5, 8, 0.1)';
+                ctx.fillRect(0, 0, width, height);
+                ctx.fillStyle = '#4f46e5';
+                ctx.font = fontSize + 'px monospace';
+
+                for (let i = 0; i < drops.length; i++) {
+                    const text = characters[Math.floor(Math.random() * characters.length)];
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    if (drops[i] * fontSize > height && Math.random() > 0.975) drops[i] = 0;
+                    drops[i]++;
+                }
+            }
+            setInterval(drawRain, 35);
+        }
+    </script>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 800, once: true, easing: 'ease-out-cubic' });
+    </script>
+    <script src="i18n.js?v=1"></script>
+</body>
+</html>
