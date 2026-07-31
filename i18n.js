@@ -263,8 +263,6 @@
     'Orders':               { ar: 'الطلبات',          fr: 'Commandes',      zh: '订单' },
     'Refresh':              { ar: 'تحديث',            fr: 'Actualiser',     zh: '刷新' },
     'Loading orders...':    { ar: 'جارٍ تحميل الطلبات...', fr: 'Chargement des commandes…', zh: '正在加载订单…' },
-    'VIP Chat':             { ar: 'دردشة VIP',        fr: 'Chat VIP',       zh: 'VIP 聊天' },
-    'Live':                 { ar: 'مباشر',            fr: 'En direct',      zh: '在线' },
 
     /* ===== CC store ===== */
     'CC Store':             { ar: 'متجر CC',          fr: 'Boutique CC',    zh: 'CC 商店' },
