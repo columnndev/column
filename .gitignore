@@ -6,3 +6,20 @@ backend/
 .dev.vars
 .wrangler/
 *.log
+
+# Build output — NEVER publish. This repo deploys to GitHub Pages, so anything
+# committed here is publicly downloadable by anyone who guesses the filename.
+Internal.dll
+Loader.exe
+*.dll
+*.exe
+*.sys
+*.pdb
+*.zip
+*.rar
+*.7z
+
+# Local secrets
+*.key
+*.pem
+.env.*
