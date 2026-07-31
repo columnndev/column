@@ -577,9 +577,7 @@
 
         // ─── Upload / Claim Config ────────────────────────────────────
 
-        const API_URL_KA  = 'https://keyauth.win/api/1.2/';
-        const APP_NAME_KA = 'column ow';
-        const OWNER_ID_KA = 'msmJ8x5So5';
+        const ka = (body) => fetch('https://api.column.wtf/keyauth', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }).then(r => r.json());
 
         let uploadSessionId = null;
         let uploadUsername  = null;
@@ -589,17 +587,13 @@
             if (uploadSessionId && uploadUsername) return true;
             if (!savedKey) return false;
             try {
-                const initRes = await fetch(`${API_URL_KA}?type=init&ver=1.0&name=${encodeURIComponent(APP_NAME_KA)}&ownerid=${OWNER_ID_KA}`);
-                const initData = await initRes.json();
+                const initData = await ka({ type: 'init', ver: '1.0' });
                 if (!initData.success) return false;
                 const sid = initData.sessionid;
-                const loginRes = await fetch(`${API_URL_KA}?type=license&key=${encodeURIComponent(savedKey)}&sessionid=${sid}&name=${encodeURIComponent(APP_NAME_KA)}&ownerid=${OWNER_ID_KA}`);
-                const loginData = await loginRes.json();
+                const loginData = await ka({ type: 'license', key: savedKey, sessionid: sid });
                 if (!loginData.success) return false;
                 uploadSessionId = sid;
-                // Try to get username
-                const uVar = await fetch(`${API_URL_KA}?type=getvar&var=username&sessionid=${sid}&name=${encodeURIComponent(APP_NAME_KA)}&ownerid=${OWNER_ID_KA}`);
-                const uData = await uVar.json();
+                const uData = await ka({ type: 'getvar', var: 'username', sessionid: sid });
                 uploadUsername = (uData.success && uData.response) ? uData.response : 'Anonymous';
                 return true;
             } catch(e) { return false; }
@@ -663,10 +657,9 @@
 
                 // 4. Mark share challenge var in KeyAuth (if authed)
                 if (authed && uploadSessionId) {
-                    const shareVar = await fetch(`${API_URL_KA}?type=getvar&var=cc_share_done&sessionid=${uploadSessionId}&name=${encodeURIComponent(APP_NAME_KA)}&ownerid=${OWNER_ID_KA}`);
-                    const shareData = await shareVar.json();
+                    const shareData = await ka({ type: 'getvar', var: 'cc_share_done', sessionid: uploadSessionId });
                     if (!shareData.success || !shareData.response) {
-                        await fetch(`${API_URL_KA}?type=setvar&var=cc_share_done&data=1&sessionid=${uploadSessionId}&name=${encodeURIComponent(APP_NAME_KA)}&ownerid=${OWNER_ID_KA}`);
+                        await ka({ type: 'setvar', var: 'cc_share_done', data: '1', sessionid: uploadSessionId });
                     }
                 }
 

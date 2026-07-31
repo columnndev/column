@@ -596,10 +596,8 @@
             setInterval(drawRain, 35);
         }
 
-        // KeyAuth
-        const API_URL = "https://keyauth.win/api/1.2/";
-        const APP_NAME = "column ow";
-        const OWNER_ID = "msmJ8x5So5";
+        // KeyAuth — proxied through worker
+        const ka = (body) => fetch('https://api.column.wtf/keyauth', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }).then(r => r.json());
 
         const savedKey = localStorage.getItem('saved_license');
         const authGate = document.getElementById('auth-gate');
@@ -610,33 +608,23 @@
         let currentUsername = null;
 
         async function keyAuthInit() {
-            const url = `${API_URL}?type=init&ver=1.0&name=${encodeURIComponent(APP_NAME)}&ownerid=${OWNER_ID}`;
-            const res = await fetch(url);
-            const data = await res.json();
+            const data = await ka({ type: 'init', ver: '1.0' });
             if (data.success) return data.sessionid;
             throw new Error(data.message || "Init failed");
         }
 
         async function keyAuthLogin(key, sessionId) {
-            const url = `${API_URL}?type=license&key=${encodeURIComponent(key)}&sessionid=${sessionId}&name=${encodeURIComponent(APP_NAME)}&ownerid=${OWNER_ID}`;
-            const res = await fetch(url);
-            return res.json();
+            return ka({ type: 'license', key, sessionid: sessionId });
         }
 
         async function keyAuthGetVar(sessionId, varName) {
-            try {
-                const url = `${API_URL}?type=getvar&var=${encodeURIComponent(varName)}&sessionid=${sessionId}&name=${encodeURIComponent(APP_NAME)}&ownerid=${OWNER_ID}`;
-                const res = await fetch(url);
-                return await res.json();
-            } catch (e) { return { success: false }; }
+            try { return await ka({ type: 'getvar', var: varName, sessionid: sessionId }); }
+            catch (e) { return { success: false }; }
         }
 
         async function keyAuthSetVar(sessionId, varName, data) {
-            try {
-                const url = `${API_URL}?type=setvar&var=${encodeURIComponent(varName)}&data=${encodeURIComponent(data)}&sessionid=${sessionId}&name=${encodeURIComponent(APP_NAME)}&ownerid=${OWNER_ID}`;
-                const res = await fetch(url);
-                return await res.json();
-            } catch (e) { return { success: false, message: "Network error" }; }
+            try { return await ka({ type: 'setvar', var: varName, data, sessionid: sessionId }); }
+            catch (e) { return { success: false, message: "Network error" }; }
         }
 
         function showStatus(elId, msg, type) {

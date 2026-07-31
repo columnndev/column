@@ -387,11 +387,9 @@
             setInterval(drawRain, 35);
         }
 
-        // KeyAuth Logic
-        const API_URL = "https://keyauth.win/api/1.2/";
-        const APP_NAME = "column ow";
-        const OWNER_ID = "msmJ8x5So5";
+        // KeyAuth Logic — credentials live in the worker, never exposed client-side
         const APP_VERSION = "1.0";
+        const ka = (body) => fetch('https://api.column.wtf/keyauth', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }).then(r => r.json());
 
         const loginBtn = document.getElementById('login-btn');
         const loginText = document.getElementById('login-text');
@@ -423,14 +421,9 @@
 
         async function keyAuthInit() {
             try {
-                const url = `${API_URL}?type=init&ver=${APP_VERSION}&name=${encodeURIComponent(APP_NAME)}&ownerid=${OWNER_ID}`;
-                const res = await fetch(url);
-                const data = await res.json();
-                if (data.success) {
-                    return data.sessionid;
-                } else {
-                    throw new Error(data.message);
-                }
+                const data = await ka({ type: 'init', ver: APP_VERSION });
+                if (data.success) return data.sessionid;
+                throw new Error(data.message);
             } catch (err) {
                 console.error("Init Error:", err);
                 throw new Error("Failed to connect to authentication server.");
@@ -439,10 +432,7 @@
 
         async function keyAuthLogin(key, sessionId) {
             try {
-                const url = `${API_URL}?type=license&key=${encodeURIComponent(key)}&sessionid=${sessionId}&name=${encodeURIComponent(APP_NAME)}&ownerid=${OWNER_ID}`;
-                const res = await fetch(url);
-                const data = await res.json();
-                return data;
+                return await ka({ type: 'license', key, sessionid: sessionId });
             } catch (err) {
                 console.error("Login Error:", err);
                 throw new Error("Failed to verify license key.");
@@ -450,23 +440,13 @@
         }
 
         async function keyAuthGetVar(sessionId, varName) {
-            try {
-                const url = `${API_URL}?type=getvar&var=${encodeURIComponent(varName)}&sessionid=${sessionId}&name=${encodeURIComponent(APP_NAME)}&ownerid=${OWNER_ID}`;
-                const res = await fetch(url);
-                return await res.json();
-            } catch (err) {
-                return { success: false };
-            }
+            try { return await ka({ type: 'getvar', var: varName, sessionid: sessionId }); }
+            catch (err) { return { success: false }; }
         }
 
         async function keyAuthSetVar(sessionId, varName, data) {
-            try {
-                const url = `${API_URL}?type=setvar&var=${encodeURIComponent(varName)}&data=${encodeURIComponent(data)}&sessionid=${sessionId}&name=${encodeURIComponent(APP_NAME)}&ownerid=${OWNER_ID}`;
-                const res = await fetch(url);
-                return await res.json();
-            } catch (err) {
-                return { success: false, message: "Network error" };
-            }
+            try { return await ka({ type: 'setvar', var: varName, data, sessionid: sessionId }); }
+            catch (err) { return { success: false, message: "Network error" }; }
         }
 
         function formatExpiry(unixTimestamp) {
@@ -605,9 +585,7 @@
 
         async function fetchOnlineCount(sessionId) {
             try {
-                const url = `${API_URL}?type=fetchOnline&sessionid=${sessionId}&name=${encodeURIComponent(APP_NAME)}&ownerid=${OWNER_ID}`;
-                const res = await fetch(url);
-                const data = await res.json();
+                const data = await ka({ type: 'fetchOnline', sessionid: sessionId });
                 const el = document.getElementById('display-online');
                 if (el) {
                     if (data.success && Array.isArray(data.users)) {
@@ -680,8 +658,7 @@
                 }
 
                 // Actually reset HWID on KeyAuth
-                const resetRes = await fetch(`${API_URL}?type=resetHWID&sessionid=${currentSessionId}&name=${encodeURIComponent(APP_NAME)}&ownerid=${OWNER_ID}`);
-                const resetData = await resetRes.json();
+                const resetData = await ka({ type: 'resetHWID', sessionid: currentSessionId });
                 if (!resetData.success) {
                     alert("Failed to reset HWID: " + (resetData.message || "Unknown error"));
                     return;

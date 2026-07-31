@@ -332,28 +332,13 @@
             setInterval(drawRain, 35);
         }
 
-        // Fetch live stats from KeyAuth
+        // Fetch live stats via worker (credentials stay server-side)
         document.addEventListener('DOMContentLoaded', () => {
-            const OWNER_ID = "msmJ8x5So5";
-            const APP_NAME = "column ow";
-            const API_URL = "https://keyauth.win/api/1.2/";
-            
             async function fetchStats() {
                 try {
-                    const r1 = await fetch(`${API_URL}?type=init&ver=1.0&name=${encodeURIComponent(APP_NAME)}&ownerid=${OWNER_ID}`);
-                    const d1 = await r1.json();
-                    if (!d1.success) return;
-                    const r2 = await fetch(`${API_URL}?type=fetchOnline&sessionid=${d1.sessionid}&name=${encodeURIComponent(APP_NAME)}&ownerid=${OWNER_ID}`);
-                    const d2 = await r2.json();
-                    
+                    const d = await fetch('https://api.column.wtf/online').then(r => r.json());
                     const el = document.getElementById('users-online');
-                    if (el && d2.success) {
-                        if (Array.isArray(d2.users)) {
-                            el.textContent = d2.users.length;
-                        } else if (d2.count !== undefined) {
-                            el.textContent = d2.count;
-                        }
-                    }
+                    if (el && d.count !== null && d.count !== undefined) el.textContent = d.count;
                 } catch(e) {
                     console.error("Failed to fetch online stats");
                 }

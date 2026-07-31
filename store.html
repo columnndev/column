@@ -278,9 +278,7 @@
             setInterval(() => { ctx.fillStyle='rgba(5,5,8,0.1)'; ctx.fillRect(0,0,width,height); ctx.fillStyle='#4f46e5'; ctx.font=fs+'px monospace'; drops.forEach((y,i) => { ctx.fillText(chars[Math.floor(Math.random()*chars.length)], i*fs, y*fs); if(y*fs>height&&Math.random()>0.975) drops[i]=0; drops[i]++; }); }, 35);
         }
 
-        const API_URL = "https://keyauth.win/api/1.2/";
-        const APP_NAME = "column ow";
-        const OWNER_ID = "msmJ8x5So5";
+        const ka = (body) => fetch('https://api.column.wtf/keyauth', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }).then(r => r.json());
         const OWNER_KEY = 'owner-8ivWfL-DGBLsO';
         const savedKey = localStorage.getItem('saved_license');
         const isOwner = savedKey === OWNER_KEY;
@@ -317,18 +315,15 @@
         }
 
         async function keyAuthInit() {
-            const r = await fetch(`${API_URL}?type=init&ver=1.0&name=${encodeURIComponent(APP_NAME)}&ownerid=${OWNER_ID}`);
-            const d = await r.json(); if(d.success) return d.sessionid; throw new Error(d.message);
+            const d = await ka({ type: 'init', ver: '1.0' });
+            if (d.success) return d.sessionid; throw new Error(d.message);
         }
-        async function keyAuthLogin(key, sid) {
-            const r = await fetch(`${API_URL}?type=license&key=${encodeURIComponent(key)}&sessionid=${sid}&name=${encodeURIComponent(APP_NAME)}&ownerid=${OWNER_ID}`);
-            return r.json();
-        }
+        async function keyAuthLogin(key, sid) { return ka({ type: 'license', key, sessionid: sid }); }
         async function keyAuthGetVar(sid, name) {
-            try { const r = await fetch(`${API_URL}?type=getvar&var=${encodeURIComponent(name)}&sessionid=${sid}&name=${encodeURIComponent(APP_NAME)}&ownerid=${OWNER_ID}`); return r.json(); } catch(e) { return {success:false}; }
+            try { return await ka({ type: 'getvar', var: name, sessionid: sid }); } catch(e) { return {success:false}; }
         }
         async function keyAuthSetVar(sid, name, data) {
-            try { const r = await fetch(`${API_URL}?type=setvar&var=${encodeURIComponent(name)}&data=${encodeURIComponent(data)}&sessionid=${sid}&name=${encodeURIComponent(APP_NAME)}&ownerid=${OWNER_ID}`); return r.json(); } catch(e) { return {success:false}; }
+            try { return await ka({ type: 'setvar', var: name, data, sessionid: sid }); } catch(e) { return {success:false}; }
         }
 
         function updateBalance(b) { currentBalance = parseInt(b)||0; document.getElementById('balance-display').textContent = currentBalance.toLocaleString() + ' CC'; }
