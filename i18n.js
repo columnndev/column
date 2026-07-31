@@ -427,6 +427,33 @@
       '  direction: ltr; text-align: left; unicode-bidi: embed;',
       '}',
       'html[dir="rtl"] ul, html[dir="rtl"] ol { padding-right: 1.2rem; padding-left: 0; }',
+      /* ---------------------------------------------------------------
+         Nav overlap fix.
+         .nav-links is absolutely centered (position:absolute + translate),
+         so it is out of flow and cannot push .nav-actions — it just runs
+         underneath it. In English the two clear each other by a few px;
+         translated labels are longer ("Fonctionnalités", "الأسئلة الشائعة")
+         and the cart ends up on top of the Flappy CC pill.
+         Only for non-English: put the links back in flow so flex can size
+         them instead of letting them overlap. English is untouched.
+         --------------------------------------------------------------- */
+      'html:not([lang="en"]) .nav-container { gap: 1rem; }',
+      'html:not([lang="en"]) .nav-links {',
+      '  position: static; transform: none; left: auto; top: auto;',
+      '  flex: 1 1 auto; min-width: 0; justify-content: center;',
+      '  gap: 1.5rem;',
+      '}',
+      'html:not([lang="en"]) .nav-links a { font-size: 0.8rem; }',
+      'html:not([lang="en"]) .nav-actions { flex: 0 0 auto; }',
+      /* tablet range: links are still shown (they only hide at 768px) but
+         space is tight once labels are translated — tighten before it bites */
+      '@media (max-width: 1100px) {',
+      '  html:not([lang="en"]) .nav-links { gap: 0.9rem; }',
+      '  html:not([lang="en"]) .nav-links a { font-size: 0.74rem; }',
+      '}',
+      /* keep actions above the links no matter what */
+      '.nav-actions { position: relative; z-index: 3; }',
+
       /* language switcher */
       '#column-lang { position: relative; display: inline-flex; }',
       '#column-lang > button {',
@@ -437,6 +464,7 @@
       '  transition: background .2s, border-color .2s;',
       '}',
       '#column-lang > button:hover { background: rgba(255,255,255,.12); border-color: rgba(124,58,237,.6); }',
+      '#column-lang .col-lang-code { font-weight: 600; letter-spacing: .04em; }',
       '#column-lang .col-lang-menu {',
       '  position: absolute; top: calc(100% + .5rem); right: 0; min-width: 168px;',
       '  background: #0d0d18; border: 1px solid rgba(255,255,255,.12);',
@@ -454,7 +482,7 @@
       'html[dir="rtl"] #column-lang .col-lang-menu button { text-align: right; }',
       '#column-lang .col-lang-menu button:hover { background: rgba(124,58,237,.18); color: #fff; }',
       '#column-lang .col-lang-menu button[aria-current="true"] { color: #a78bfa; font-weight: 600; }',
-      '@media (max-width: 820px) { #column-lang > button span.col-lang-name { display: none; } }'
+      '@media (max-width: 820px) { #column-lang > button span.col-lang-code { display: none; } }'
     ].join('\n');
     document.head.appendChild(s);
   }
@@ -471,8 +499,10 @@
     var btn = document.createElement('button');
     btn.type = 'button';
     btn.setAttribute('aria-label', 'Language');
+    // Flag + 2-letter code only. The full name lives in the dropdown — the
+    // trigger has to stay narrow or it pushes the nav into the centred links.
     btn.innerHTML = '<span class="col-lang-flag">' + LANGS[cur].flag + '</span>' +
-                    '<span class="col-lang-name">' + LANGS[cur].name + '</span>' +
+                    '<span class="col-lang-code">' + cur.toUpperCase() + '</span>' +
                     '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"></polyline></svg>';
 
     var menu = document.createElement('div');
@@ -510,9 +540,9 @@
     var wrap = document.getElementById('column-lang');
     if (!wrap) return;
     var f = wrap.querySelector('.col-lang-flag');
-    var n = wrap.querySelector('.col-lang-name');
+    var c = wrap.querySelector('.col-lang-code');
     if (f) f.textContent = LANGS[lang].flag;
-    if (n) n.textContent = LANGS[lang].name;
+    if (c) c.textContent = lang.toUpperCase();
     Array.prototype.forEach.call(wrap.querySelectorAll('.col-lang-menu button'), function (b) {
       if (b.dataset.lang === lang) b.setAttribute('aria-current', 'true');
       else b.removeAttribute('aria-current');
