@@ -31,6 +31,6 @@ jobs:
         run: |
           git config --global user.name "GitHub Actions Bot"
           git config --global user.email "actions@github.com"
-          git add config.js current_build.txt
+          git add config.js current_build.txt status-history.json
           git commit -m "Auto-Lock: Overwatch Update Detected 🚨"
           git push

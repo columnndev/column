@@ -103,8 +103,80 @@
 
         .stats-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(3, 1fr);
             gap: 1.5rem;
+        }
+
+        @media (max-width: 560px) {
+            .stats-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ── Update / downtime history ──────────────────────────────── */
+        .history-block {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .history-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .history-head h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            letter-spacing: 0.02em;
+        }
+
+        .history-sub { font-size: 0.78rem; color: var(--text-muted); }
+
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.55rem;
+            max-height: 260px;
+            overflow-y: auto;
+        }
+
+        .history-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.7rem 0.9rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-left: 3px solid #6b7280;
+            border-radius: 8px;
+            font-size: 0.82rem;
+        }
+
+        .history-row.ongoing  { border-left-color: #f59e0b; }
+        .history-row.resolved { border-left-color: #10b981; }
+
+        .history-when { color: #fff; font-weight: 500; }
+        .history-why  { color: var(--text-muted); font-size: 0.76rem; margin-top: 2px; }
+
+        .history-dur {
+            flex-shrink: 0;
+            font-weight: 600;
+            color: var(--text-muted);
+            font-variant-numeric: tabular-nums;
+        }
+        .history-row.ongoing .history-dur { color: #f59e0b; }
+
+        .history-empty {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-align: center;
+            padding: 1rem 0;
         }
 
         .stat-item {
@@ -195,11 +267,26 @@
                     <div class="stat-label">Users Online</div>
                 </div>
                 <div class="stat-item" data-aos="fade-up" data-aos-delay="300">
-                    <div class="stat-value" id="uptime">100%</div>
-                    <div class="stat-label">Uptime</div>
+                    <div class="stat-value" id="uptime">--</div>
+                    <div class="stat-label" id="uptime-label">Uptime</div>
+                </div>
+                <div class="stat-item" data-aos="fade-up" data-aos-delay="400">
+                    <div class="stat-value" id="reported-bans">0</div>
+                    <div class="stat-label">Reported Bans</div>
                 </div>
             </div>
-            
+
+            <!-- Update / downtime history -->
+            <div class="history-block" data-aos="fade-up" data-aos-delay="500">
+                <div class="history-head">
+                    <h2>Update History</h2>
+                    <span class="history-sub" id="history-sub">Downtime while offsets are rebuilt</span>
+                </div>
+                <div id="history-list" class="history-list">
+                    <div class="history-empty">Loading…</div>
+                </div>
+            </div>
+
             <div class="last-updated">
                 Last checked: <span id="time-checked" style="color: white; font-weight: 500;">Just now</span>
             </div>
@@ -276,6 +363,99 @@
             
             fetchStats();
             setInterval(fetchStats, 60000);
+
+            // ── Uptime + update history ─────────────────────────────────────
+            // Uptime is derived from the recorded outages rather than hardcoded.
+            // A flat "100%" is never true — every Overwatch build change locks
+            // the loader while offsets are rebuilt, and that is downtime.
+            function fmtDuration(ms) {
+                const mins = Math.max(1, Math.round(ms / 60000));
+                if (mins < 60) return mins + 'm';
+                const h = Math.floor(mins / 60), m = mins % 60;
+                if (h < 24) return m ? `${h}h ${m}m` : `${h}h`;
+                const d = Math.floor(h / 24), rh = h % 24;
+                return rh ? `${d}d ${rh}h` : `${d}d`;
+            }
+
+            function fmtDate(d) {
+                return d.toLocaleDateString([], { month: 'short', day: 'numeric' }) +
+                       ' ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            }
+
+            async function loadHistory() {
+                let data;
+                try {
+                    const res = await fetch('status-history.json?t=' + Date.now());
+                    if (!res.ok) throw new Error('http ' + res.status);
+                    data = await res.json();
+                } catch (e) {
+                    document.getElementById('history-list').innerHTML =
+                        '<div class="history-empty">History unavailable right now.</div>';
+                    return;
+                }
+
+                const now       = Date.now();
+                const windowDays = Number(data.uptimeWindowDays) || 30;
+                const windowMs  = windowDays * 86400000;
+                const windowStart = now - windowMs;
+                const entries   = Array.isArray(data.downtime) ? data.downtime : [];
+
+                // Sum only the portion of each outage that falls inside the window,
+                // so an outage straddling the boundary is counted proportionally.
+                let downMs = 0;
+                entries.forEach(d => {
+                    const s = Date.parse(d.start);
+                    if (isNaN(s)) return;
+                    const e = d.end ? Date.parse(d.end) : now;   // open entry = still down
+                    const from = Math.max(s, windowStart);
+                    const to   = Math.min(isNaN(e) ? now : e, now);
+                    if (to > from) downMs += (to - from);
+                });
+
+                const pct = Math.max(0, Math.min(100, ((windowMs - downMs) / windowMs) * 100));
+                // Floor rather than round, so 99.996% never displays as a flat 100%.
+                const shown = (Math.floor(pct * 100) / 100).toFixed(2);
+                document.getElementById('uptime').textContent = shown + '%';
+                // Label is left alone so it stays translatable — the window is
+                // spelled out in the history subtitle instead.
+
+                const bansEl = document.getElementById('reported-bans');
+                if (bansEl) bansEl.textContent = Number(data.reportedBans) || 0;
+
+                // Newest first
+                const sorted = entries.slice().sort((a, b) => Date.parse(b.start) - Date.parse(a.start));
+                const list = document.getElementById('history-list');
+                const sub  = document.getElementById('history-sub');
+
+                if (!sorted.length) {
+                    list.innerHTML = '<div class="history-empty">No downtime recorded yet.</div>';
+                    if (sub) sub.textContent = 'No outages on record';
+                    return;
+                }
+
+                const inWindow = sorted.filter(d => Date.parse(d.end || new Date().toISOString()) >= windowStart).length;
+                if (sub) sub.textContent = `${inWindow} outage${inWindow === 1 ? '' : 's'} in the last ${windowDays} days`;
+
+                list.innerHTML = sorted.slice(0, 12).map(d => {
+                    const s = new Date(d.start);
+                    const ongoing = !d.end;
+                    const e = ongoing ? new Date() : new Date(d.end);
+                    const dur = fmtDuration(e - s);
+                    const why = d.reason || 'Maintenance';
+                    const build = d.build ? ` · build ${d.build}` : '';
+                    return `
+                        <div class="history-row ${ongoing ? 'ongoing' : 'resolved'}">
+                            <div>
+                                <div class="history-when">${fmtDate(s)}${ongoing ? ' — ongoing' : ''}</div>
+                                <div class="history-why">${why}${build}</div>
+                            </div>
+                            <div class="history-dur">${dur}</div>
+                        </div>`;
+                }).join('');
+            }
+
+            loadHistory();
+            setInterval(loadHistory, 60000);
 
             // Apply global config
             if (typeof CONFIG !== 'undefined') {

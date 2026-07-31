@@ -291,6 +291,12 @@
     'UNDETECTED':           { ar: 'غير مكشوف',        fr: 'INDÉTECTÉ',      zh: '未被检测' },
     'Users Online':         { ar: 'المستخدمون المتصلون', fr: 'Utilisateurs en ligne', zh: '在线用户' },
     'Uptime':               { ar: 'مدة التشغيل',      fr: 'Disponibilité',  zh: '正常运行时间' },
+    'Reported Bans':        { ar: 'حالات حظر مُبلّغ عنها', fr: 'Bans signalés', zh: '已报告封禁' },
+    'Update History':       { ar: 'سجل التحديثات',    fr: 'Historique des mises à jour', zh: '更新记录' },
+    'Downtime while offsets are rebuilt': { ar: 'فترات التوقف أثناء إعادة بناء الأوفستات', fr: 'Indisponibilité pendant la reconstruction des offsets', zh: '重建偏移期间的停机时间' },
+    'No downtime recorded yet.': { ar: 'لا توجد فترات توقف مسجّلة بعد.', fr: 'Aucune indisponibilité enregistrée.', zh: '暂无停机记录。' },
+    'No outages on record': { ar: 'لا توجد أعطال مسجّلة', fr: 'Aucune panne enregistrée', zh: '无故障记录' },
+    'History unavailable right now.': { ar: 'السجل غير متاح حالياً.', fr: 'Historique indisponible pour le moment.', zh: '记录暂时无法加载。' },
     'Last checked:':        { ar: 'آخر فحص:',         fr: 'Dernière vérification :', zh: '最后检查：' },
     'Just now':             { ar: 'الآن',             fr: 'À l\'instant',   zh: '刚刚' },
 
