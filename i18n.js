@@ -435,7 +435,7 @@
          so it is out of flow and cannot push .nav-actions — it just runs
          underneath it. In English the two clear each other by a few px;
          translated labels are longer ("Fonctionnalités", "الأسئلة الشائعة")
-         and the cart ends up on top of the Flappy CC pill.
+         and the cart button ends up on top of the last nav link.
          Only for non-English: put the links back in flow so flex can size
          them instead of letting them overlap. English is untouched.
          --------------------------------------------------------------- */
