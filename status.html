@@ -160,6 +160,7 @@
 
         .history-row.ongoing  { border-left-color: #f59e0b; }
         .history-row.resolved { border-left-color: #10b981; }
+        .history-row.silent   { border-left-color: #6366f1; }
 
         .history-when { color: #fff; font-weight: 500; }
         .history-why  { color: var(--text-muted); font-size: 0.76rem; margin-top: 2px; }
@@ -171,6 +172,7 @@
             font-variant-numeric: tabular-nums;
         }
         .history-row.ongoing .history-dur { color: #f59e0b; }
+        .history-row.silent  .history-dur { color: #818cf8; font-weight: 500; }
 
         .history-empty {
             color: var(--text-muted);
@@ -441,11 +443,16 @@
                     const s = new Date(d.start);
                     const ongoing = !d.end;
                     const e = ongoing ? new Date() : new Date(d.end);
-                    const dur = fmtDuration(e - s);
+                    const ms = e - s;
+                    // start == end means it shipped without taking the loader
+                    // down. Say so rather than rounding it up to "1m".
+                    const silent = !ongoing && ms <= 0;
+                    const dur = silent ? 'No downtime' : fmtDuration(ms);
                     const why = d.reason || 'Maintenance';
                     const build = d.build ? ` · build ${d.build}` : '';
+                    const cls = ongoing ? 'ongoing' : (silent ? 'silent' : 'resolved');
                     return `
-                        <div class="history-row ${ongoing ? 'ongoing' : 'resolved'}">
+                        <div class="history-row ${cls}">
                             <div>
                                 <div class="history-when">${fmtDate(s)}${ongoing ? ' — ongoing' : ''}</div>
                                 <div class="history-why">${why}${build}</div>

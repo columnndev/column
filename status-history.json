@@ -1,5 +1,5 @@
 {
-  "_comment": "Downtime log. Written automatically by .github/scripts/monitor.js when an Overwatch build change locks the loader, and closed again once the status returns to UNDETECTED. Uptime on the status page is calculated from this - do not hand-edit unless you are correcting a mistake.",
+  "_comment": "Update log. Outages are written automatically by .github/scripts/monitor.js when an Overwatch build change locks the loader, and closed again once the status returns to UNDETECTED. Uptime on the status page is calculated from this. Entries where start == end are silent updates - shipped without taking the loader down - and contribute no downtime.",
   "reportedBans": 0,
   "uptimeWindowDays": 30,
   "downtime": [
@@ -8,6 +8,11 @@
       "end": "2026-07-28T21:30:00Z",
       "build": "151722",
       "reason": "Overwatch Retail Patch Notes - July 28, 2026"
+    },
+    {
+      "start": "2026-07-31T00:00:00Z",
+      "end": "2026-07-31T00:00:00Z",
+      "reason": "Config auto-swap issues fixed - silent update, current loader unaffected"
     }
   ]
 }

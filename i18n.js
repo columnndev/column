@@ -368,6 +368,11 @@
 
   // Original English is stashed on first pass so switching back is lossless.
   var TEXT_KEY = '__col_en';
+  // What WE last wrote into the node. If the node no longer holds that, the
+  // page's own scripts changed it (live user count, order lists, balances) and
+  // the stashed baseline is stale — without this the observer would keep
+  // restoring the old placeholder and wipe every dynamic value on the page.
+  var WROTE_KEY = '__col_wrote';
 
   function translateTextNodes(root, lang) {
     var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
@@ -384,18 +389,29 @@
     while ((n = walker.nextNode())) batch.push(n);
 
     batch.forEach(function (node) {
-      if (node[TEXT_KEY] === undefined) node[TEXT_KEY] = node.nodeValue;
-      var en = norm(node[TEXT_KEY]);
-      if (lang === 'en') { node.nodeValue = node[TEXT_KEY]; return; }
-      var entry = T[en];
-      if (entry && entry[lang]) {
-        // preserve surrounding whitespace so inline layout doesn't collapse
-        var lead = node[TEXT_KEY].match(/^\s*/)[0];
-        var tail = node[TEXT_KEY].match(/\s*$/)[0];
-        node.nodeValue = lead + entry[lang] + tail;
-      } else {
-        node.nodeValue = node[TEXT_KEY];
+      // Re-baseline when the page rewrote this node itself, otherwise a live
+      // value (users online, CC balance, order rows) gets reverted to the
+      // placeholder that was there when we first saw it.
+      if (node[TEXT_KEY] === undefined || node[WROTE_KEY] !== node.nodeValue) {
+        node[TEXT_KEY] = node.nodeValue;
       }
+      var en = norm(node[TEXT_KEY]);
+      var out;
+      if (lang === 'en') {
+        out = node[TEXT_KEY];
+      } else {
+        var entry = T[en];
+        if (entry && entry[lang]) {
+          // preserve surrounding whitespace so inline layout doesn't collapse
+          var lead = node[TEXT_KEY].match(/^\s*/)[0];
+          var tail = node[TEXT_KEY].match(/\s*$/)[0];
+          out = lead + entry[lang] + tail;
+        } else {
+          out = node[TEXT_KEY];
+        }
+      }
+      node.nodeValue  = out;
+      node[WROTE_KEY] = out;
     });
   }
 
