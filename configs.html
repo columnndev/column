@@ -574,7 +574,13 @@
 
         // ─── Upload / Claim Config ────────────────────────────────────
 
-        const ka = (body) => fetch('https://api.column.wtf/keyauth', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }).then(r => r.json());
+        // dc = the signed Discord proof minted on login.html; the worker refuses
+        // 'license' without it, so a visitor who never connected stays logged out.
+        const ka = (body) => fetch('https://api.column.wtf/keyauth', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify(Object.assign({}, body, { dc: localStorage.getItem('column_dc') || null }))
+        }).then(r => r.json());
 
         let uploadSessionId = null;
         let uploadUsername  = null;

@@ -197,86 +197,34 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // ── Crypto checkout: Discord connect -> NOWPayments invoice -> key + role ──
-    // After Discord OAuth the backend sends the buyer to index.html#dc=<ref>.
-    function getDiscordRef() {
-        const m = location.hash.match(/dc=([A-Za-z0-9]+)/);
-        if (m) localStorage.setItem('discord_ref', m[1]);
-        return localStorage.getItem('discord_ref');
-    }
+    // ── Checkout: every order is completed in the Discord server ──
+    // No OAuth and no hosted invoice anymore. The buyer is sent straight to the
+    // server, opens a ticket, and staff run  !sign @user <duration>  which issues
+    // the KeyAuth key and the timed role.
+    const DISCORD_INVITE = (typeof BACKEND !== 'undefined' && BACKEND.invite) || 'https://discord.gg/wgxyDQS9WW';
 
-    // Checkout button
-    checkoutBtn.addEventListener('click', async () => {
+    checkoutBtn.addEventListener('click', () => {
         if (cart.length === 0) return;
 
-        // Need the buyer's Discord first so we can auto-assign the role.
-        const ref = getDiscordRef();
-        if (!ref) {
-            showToast('Connect Discord so we can deliver your role…');
-            setTimeout(() => { location.href = BACKEND.discordLoginUrl(); }, 900);
-            return;
-        }
-
-        // Bill the whole cart as one order; key is issued for the top item.
-        const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-        const primary = cart.slice().sort((a, b) => b.price - a.price)[0];
+        // Remember the basket so the buyer can quote it in their ticket.
+        try {
+            localStorage.setItem('column_last_order', cart.map(i => `${i.name} x${i.qty}`).join(', '));
+        } catch (e) {}
 
         checkoutBtn.disabled = true;
-        checkoutBtn.textContent = 'Creating invoice…';
-        try {
-            const res = await BACKEND.checkout({
-                itemId: primary.id,
-                itemName: cart.map(i => `${i.name} x${i.qty}`).join(', '),
-                priceUsd: Number(total.toFixed(2)),
-                discordRef: ref
-            });
-            // Saved Discord link expired on the server — reconnect, then they
-            // come back and click Checkout again (cart is preserved).
-            if (res.needDiscord) {
-                localStorage.removeItem('discord_ref');
-                showToast('Please reconnect Discord to receive your role…');
-                setTimeout(() => { location.href = BACKEND.discordLoginUrl(); }, 900);
-                return;
-            }
-            localStorage.setItem('pending_order', res.orderId);
-            window.location.href = res.invoiceUrl; // go to the hosted crypto checkout
-        } catch (e) {
-            showToast('Checkout failed: ' + e.message);
-            checkoutBtn.disabled = false;
-            checkoutBtn.textContent = 'Checkout';
-        }
+        checkoutBtn.textContent = 'Opening Discord…';
+        showToast('Opening Discord — open a ticket and staff will hand over your key.');
+        setTimeout(() => { window.location.href = DISCORD_INVITE; }, 900);
     });
 
-    // Capture the Discord ref when the buyer returns from OAuth, and render any
-    // cart restored from localStorage.
-    getDiscordRef();
+    // Render any cart restored from localStorage.
     updateCartUI();
 
-    // If the buyer just came back from Discord, nudge them to finish checkout.
-    if (location.hash.includes('dc=') && cart.length > 0) {
-        showToast('Discord connected — click Checkout to pay.');
-        if (cartSidebar) { cartSidebar.classList.add('open'); cartOverlay.classList.add('show'); }
+    // Old OAuth return links (#dc=<ref>) can still be bookmarked — strip them so the
+    // hash doesn't stick around in the URL bar.
+    if (location.hash.includes('dc=')) {
+        history.replaceState(null, '', location.pathname + location.search + '#pricing');
     }
-
-    // After the hosted checkout, NOWPayments returns the buyer to ?paid=<orderId>.
-    // Poll the backend until the key is delivered, then show it and clear the cart.
-    async function pollOrder(orderId) {
-        let tries = 0;
-        const timer = setInterval(async () => {
-            tries++;
-            const o = await BACKEND.getOrder(orderId);
-            if (o && o.status === 'delivered') {
-                clearInterval(timer);
-                localStorage.removeItem('pending_order');
-                cart = []; updateCartUI();
-                showToast('Payment confirmed! Key + role delivered — check your Discord DMs.');
-                if (o.key) alert('Your Column license key:\n\n' + o.key + '\n\nYour Discord role has been added and the key was DM\'d to you.');
-            }
-            if (tries > 120) clearInterval(timer); // give up after ~20 min
-        }, 10000);
-    }
-    const paidId = new URLSearchParams(location.search).get('paid') || localStorage.getItem('pending_order');
-    if (paidId) pollOrder(paidId);
 
     // Toast Notification System
     function showToast(message) {

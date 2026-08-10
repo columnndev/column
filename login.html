@@ -237,12 +237,35 @@
 
             <div class="error-message" id="error-msg">Invalid key provided.</div>
 
-            <div class="input-group">
-                <label for="license-key">License Key</label>
-                <input type="text" id="license-key" class="input-control" placeholder="XXXX-XXXX-XXXX-XXXX" autocomplete="off" spellcheck="false">
+            <!-- Step 1: Discord. The key field stays locked until this is green. -->
+            <div id="dc-gate" style="margin-bottom:1.1rem;">
+                <div id="dc-disconnected">
+                    <div style="display:flex;align-items:center;gap:8px;font-size:0.82rem;color:rgba(255,255,255,0.45);margin-bottom:0.6rem;">
+                        <span style="display:inline-flex;width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,0.08);align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;">1</span>
+                        Connect Discord to unlock your key
+                    </div>
+                    <button id="dc-connect-btn" class="btn-block btn-large" style="background:#5865F2;color:#fff;border:none;border-radius:10px;padding:0.85rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;">
+                        <svg width="20" height="20" viewBox="0 0 127 96" fill="currentColor"><path d="M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.11 0A72.37 72.37 0 0 0 45.64 0a105.89 105.89 0 0 0-26.25 8.09C2.79 32.65-1.71 56.6.54 80.21a105.73 105.73 0 0 0 32.17 16.15 77.7 77.7 0 0 0 6.89-11.11 68.42 68.42 0 0 1-10.85-5.18c.91-.66 1.8-1.34 2.66-2a75.57 75.57 0 0 0 64.32 0c.87.71 1.76 1.39 2.66 2a68.68 68.68 0 0 1-10.87 5.19 77 77 0 0 0 6.89 11.1 105.25 105.25 0 0 0 32.19-16.14c2.64-27.38-4.51-51.11-18.9-72.15ZM42.45 65.69C36.18 65.69 31 60 31 53s5-12.74 11.43-12.74S54 46 53.89 53s-5.05 12.69-11.44 12.69Zm42.24 0C78.41 65.69 73.25 60 73.25 53s5-12.74 11.44-12.74S96.23 46 96.12 53s-5.04 12.69-11.43 12.69Z"/></svg>
+                        Connect Discord
+                    </button>
+                    <p style="font-size:0.72rem;color:rgba(255,255,255,0.3);margin-top:0.55rem;line-height:1.5;">
+                        You must be in the Column Discord to use the portal. If you aren't yet, connecting adds you automatically.
+                    </p>
+                </div>
+
+                <div id="dc-connected" style="display:none;align-items:center;gap:10px;padding:0.7rem 0.9rem;border-radius:10px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.22);">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <span style="font-size:0.84rem;color:#10b981;font-weight:600;">Discord connected</span>
+                    <span id="dc-username" style="font-size:0.8rem;color:rgba(255,255,255,0.45);margin-left:auto;"></span>
+                </div>
             </div>
 
-            <button id="login-btn" class="btn-primary btn-block btn-large">
+            <div class="input-group">
+                <label for="license-key">License Key</label>
+                <input type="text" id="license-key" class="input-control" placeholder="XXXX-XXXX-XXXX-XXXX" autocomplete="off" spellcheck="false" disabled>
+            </div>
+
+            <button id="login-btn" class="btn-primary btn-block btn-large" disabled>
                 <span id="login-text">Authenticate</span>
                 <svg class="loader-icon" id="login-loader" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10" stroke-dasharray="31.4 31.4" stroke-dashoffset="0"></circle></svg>
             </button>
@@ -389,7 +412,13 @@
 
         // KeyAuth Logic — credentials live in the worker, never exposed client-side
         const APP_VERSION = "1.0";
-        const ka = (body) => fetch('https://api.column.wtf/keyauth', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }).then(r => r.json());
+        // Every call carries the signed Discord proof — the worker rejects
+        // 'license' and 'resetHWID' outright without a valid one.
+        const ka = (body) => fetch('https://api.column.wtf/keyauth', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify(Object.assign({}, body, { dc: BACKEND.discordToken() }))
+        }).then(r => r.json());
 
         const loginBtn = document.getElementById('login-btn');
         const loginText = document.getElementById('login-text');
@@ -415,6 +444,38 @@
         let currentSessionId = null;
         let currentKey = null;
         let currentExpiry = null;
+
+        // ── Discord gate ──────────────────────────────────────────────────────
+        // The key field and the Authenticate button ship disabled in the markup
+        // and only open once the worker confirms a live server membership.
+        const dcConnectBtn = document.getElementById('dc-connect-btn');
+        const dcDisconnected = document.getElementById('dc-disconnected');
+        const dcConnected = document.getElementById('dc-connected');
+        const dcUsername = document.getElementById('dc-username');
+
+        dcConnectBtn.addEventListener('click', () => { location.href = BACKEND.connectUrl(); });
+
+        function setDiscordGate(open, name) {
+            licenseKeyInput.disabled = !open;
+            loginBtn.disabled = !open;
+            dcDisconnected.style.display = open ? 'none' : 'block';
+            dcConnected.style.display = open ? 'flex' : 'none';
+            dcUsername.textContent = name ? '@' + name : '';
+        }
+
+        async function refreshDiscordGate() {
+            if (location.hash.indexOf('dcerror=notmember') !== -1) {
+                history.replaceState(null, '', location.pathname);
+                showError('Could not add you to the Discord server — join ' + BACKEND.invite + ' and try again.');
+            }
+            BACKEND.captureDiscord();
+
+            const me = await BACKEND.discordMe();
+            // A dead token means expired, revoked, or kicked from the server.
+            if (!me.ok && !me.offline) BACKEND.clearDiscord();
+            setDiscordGate(!!me.ok, me.username);
+            return !!me.ok;
+        }
 
         // HWID generation removed as requested.
         // WARNING: If HWID Lock is enabled on the KeyAuth Dashboard, omitting the HWID will cause KeyAuth to lock the license to the user's IP Address!
@@ -466,6 +527,14 @@
             try {
                 const sessionId = await keyAuthInit();
                 const result = await keyAuthLogin(key, sessionId);
+
+                // Token expired or they left the server between page load and now.
+                if (result.needDiscord) {
+                    BACKEND.clearDiscord();
+                    setDiscordGate(false, null);
+                    showError('Connect your Discord account to log in.');
+                    return;
+                }
 
                 if (result.success) {
                     // Success!
@@ -711,10 +780,16 @@
                 const res = await fetch('https://api.column.wtf/download/loader', {
                     method: 'POST',
                     headers: { 'content-type': 'application/json' },
-                    body: JSON.stringify({ sessionid: currentSessionId }),
+                    body: JSON.stringify({ sessionid: currentSessionId, dc: BACKEND.discordToken() }),
                 });
                 if (!res.ok) {
                     const err = await res.json().catch(() => ({}));
+                    if (err.needDiscord) {
+                        BACKEND.clearDiscord();
+                        alert('Your Discord link expired or you left the server. Reconnect to download.');
+                        location.reload();
+                        return;
+                    }
                     alert('Download failed: ' + (err.error || res.status));
                     return;
                 }
@@ -742,6 +817,7 @@
             if (saved) {
                 licenseKeyInput.value = saved;
             }
+            refreshDiscordGate();
         });
 
         // ── Orders ────────────────────────────────────────────────────────────

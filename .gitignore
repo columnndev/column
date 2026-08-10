@@ -3,6 +3,9 @@ node_modules/
 
 # Backend (deployed separately to Cloudflare — never publish to Pages)
 backend/
+
+# Discord bot (runs on its own host — never publish to Pages)
+bot/
 .dev.vars
 .wrangler/
 *.log

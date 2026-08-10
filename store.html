@@ -278,7 +278,13 @@
             setInterval(() => { ctx.fillStyle='rgba(5,5,8,0.1)'; ctx.fillRect(0,0,width,height); ctx.fillStyle='#4f46e5'; ctx.font=fs+'px monospace'; drops.forEach((y,i) => { ctx.fillText(chars[Math.floor(Math.random()*chars.length)], i*fs, y*fs); if(y*fs>height&&Math.random()>0.975) drops[i]=0; drops[i]++; }); }, 35);
         }
 
-        const ka = (body) => fetch('https://api.column.wtf/keyauth', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }).then(r => r.json());
+        // dc = the signed Discord proof minted on login.html; the worker refuses
+        // 'license' without it, so a visitor who never connected stays logged out.
+        const ka = (body) => fetch('https://api.column.wtf/keyauth', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify(Object.assign({}, body, { dc: localStorage.getItem('column_dc') || null }))
+        }).then(r => r.json());
         const savedKey = localStorage.getItem('saved_license');
         const isOwner = localStorage.getItem('column_is_owner') === 'true';
         let currentSessionId = null, currentBalance = 0, ownedItems = [];
