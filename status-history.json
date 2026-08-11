@@ -13,6 +13,12 @@
       "start": "2026-07-31T00:00:00Z",
       "end": "2026-07-31T00:00:00Z",
       "reason": "Config auto-swap issues fixed - silent update, current loader unaffected"
+    },
+    {
+      "start": "2026-08-11T18:02:39.053Z",
+      "end": null,
+      "build": "152637",
+      "reason": "Overwatch build update - offsets rebuilt"
     }
   ]
 }
