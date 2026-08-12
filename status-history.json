@@ -19,6 +19,12 @@
       "end": "2026-08-11T23:08:21.686Z",
       "build": "152637",
       "reason": "Overwatch build update - offsets rebuilt"
+    },
+    {
+      "start": "2026-08-12T03:15:29.840Z",
+      "end": null,
+      "build": "152690",
+      "reason": "Overwatch build update - offsets rebuilt"
     }
   ]
 }
