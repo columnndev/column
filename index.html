@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,7 +11,7 @@
     <meta property="og:image" content="https://raw.githubusercontent.com/columnndev/column/main/logo.png">
     <meta property="og:url" content="https://columnndev.github.io/column/">
     <meta name="theme-color" content="#4f46e5">
-    <meta name="description" content="Column - Elevate your gameplay. Get the best pricing for Daily, Weekly, and Monthly access.">
+    <meta name="description" content="Column - Fully private Overwatch 2 enhancement. 50 slots total, applications reviewed manually.">
     
     <!-- Premium Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -70,12 +70,12 @@
                 <a href="status.html">Status</a>
             </nav>
             <div class="nav-actions">
-                <button id="cart-toggle" class="btn-icon" aria-label="Cart">
+                <button id="cart-toggle" class="btn-icon" aria-label="Cart" style="display:none">
                     <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
                     <span id="cart-badge" class="badge-count">0</span>
                 </button>
                 <a href="login.html" class="btn-secondary desktop-only">Portal</a>
-                <a href="#pricing" class="btn-primary desktop-only">Get Started</a>
+                <a href="#pricing" class="btn-primary desktop-only">Apply</a>
                 <button id="mobile-menu-toggle" class="btn-icon mobile-only" aria-label="Menu">
                     <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
                 </button>
@@ -87,7 +87,7 @@
     <div id="mobile-menu" class="mobile-menu">
         <a href="#home" class="mobile-link">Home</a>
         <a href="#features" class="mobile-link">Features</a>
-        <a href="#pricing" class="mobile-link">Pricing</a>
+        <a href="#pricing" class="mobile-link">Access</a>
         <a href="#faq" class="mobile-link">FAQ</a>
         <a href="news.html" class="mobile-link">News</a>
         <a href="status.html" class="mobile-link">Status</a>
@@ -95,7 +95,7 @@
     </div>
 
     <!-- Cart Sidebar -->
-    <div id="cart-sidebar" class="cart-sidebar">
+    <div id="cart-sidebar" class="cart-sidebar" style="display:none">
         <div class="cart-header">
             <h2>Your Cart</h2>
             <button id="close-cart" class="btn-icon" aria-label="Close Cart">
@@ -113,7 +113,7 @@
             <button id="checkout-btn" class="btn-primary btn-block btn-checkout" disabled>Checkout</button>
         </div>
     </div>
-    <div id="cart-overlay" class="cart-overlay"></div>
+    <div id="cart-overlay" class="cart-overlay" style="display:none"></div>
 
     <!-- Toast Notifications -->
     <div id="toast-container" class="toast-container"></div>
@@ -131,7 +131,7 @@
                     </span>
                 </div>
                 <h1 class="hero-title" data-aos="fade-up" data-aos-duration="1000">Experience <span class="text-gradient">Absolute Dominance</span></h1>
-                <p class="hero-subtitle" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">The only semi-public provider that still hasn't taken a wave — while the rest go dark or leave their users banned and waiting. We stay up through every patch and every sweep.</p>
+                <p class="hero-subtitle" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">The only semi-public provider that still hasn't taken a wave â€” while the rest go dark or leave their users banned and waiting. We stay up through every patch and every sweep.</p>
                 <div class="hero-proof" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
                     <span class="proof-chip">
                         <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
@@ -147,14 +147,14 @@
                     </span>
                 </div>
                 <div class="hero-cta" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400">
-                    <a href="#pricing" class="btn-primary btn-large btn-glow">View Plans</a>
+                    <a href="#pricing" class="btn-primary btn-large btn-glow">Apply for Access</a>
                     <a href="#features" class="btn-secondary btn-large">Discover Features</a>
                 </div>
                 <!-- Live online counter -->
                 <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="600" style="margin-top: 2rem; display: flex; align-items: center; gap: 10px; justify-content: center;">
                     <span style="display:inline-flex;align-items:center;gap:8px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.25);border-radius:999px;padding:6px 18px;font-size:0.9rem;color:#10b981;font-weight:600;">
                         <span id="hero-online-dot" style="width:8px;height:8px;border-radius:50%;background:#10b981;box-shadow:0 0 8px #10b981;display:inline-block;animation:pulse-dot 2s infinite;"></span>
-                        <span id="hero-online-count">—</span> users online right now
+                        <span id="hero-online-count">â€”</span> users online right now
                     </span>
                 </div>
                 <script>
@@ -234,119 +234,100 @@
             </div>
         </section>
 
-        <!-- Pricing Section -->
+        <!-- Private Access Section -->
         <section id="pricing" class="pricing-section">
             <div class="section-header">
-                <h2 class="section-title">Select Your <span class="text-gradient">Access</span></h2>
-                <p class="section-subtitle">Premium features at highly competitive prices.</p>
+                <h2 class="section-title">Now Fully <span class="text-gradient">Private</span></h2>
+                <p class="section-subtitle">50 slots total. Applications are reviewed manually.</p>
             </div>
-            
-            <div class="pricing-container">
-                <!-- Daily Plan -->
-                <div class="pricing-card trial glass-panel" id="card-daily" data-aos="fade-up" data-aos-delay="100">
-                    <div class="trial-tag">BEST FOR TESTING</div>
-                    <div class="card-glow"></div>
-                    <div class="card-content">
-                        <div class="plan-header">
-                            <div>
-                                <h3 class="plan-name">Daily</h3>
-                                <p class="plan-desc">Perfect for testing.</p>
-                            </div>
-                            <div class="plan-icon-badge">1D</div>
-                        </div>
-                        <div class="plan-price">
-                            <span class="currency">$</span><span class="amount"><s style="font-size: 0.6em; opacity: 0.7; margin-right: 8px;">12</s>8.99</span><span class="period">/day</span>
-                        </div>
-                        <div class="divider"></div>
-                        <ul class="plan-features">
-                            <li><svg viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> 24 Hours Access</li>
-                            <li><svg viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> Full Feature Access</li>
-                            <li><svg viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> Standard Support (24h max)</li>
-                            <li style="color: rgba(255,255,255,0.4);"><svg viewBox="0 0 20 20" style="fill: #ef4444;"><path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"/></svg> China not supported yet</li>
-                        </ul>
-                        <button class="btn-purchase add-to-cart" data-id="daily" data-name="Daily Plan" data-price="8.99">Add to Cart</button>
-                    </div>
-                </div>
 
-                <!-- 3-Day Plan -->
-                <div class="pricing-card glass-panel" id="card-3day" data-aos="fade-up" data-aos-delay="150">
-                    <div class="card-glow"></div>
-                    <div class="card-content">
-                        <div class="plan-header">
-                            <div>
-                                <h3 class="plan-name">3 Days</h3>
-                                <p class="plan-desc">Weekend warrior.</p>
-                            </div>
-                            <div class="plan-icon-badge">3D</div>
-                        </div>
-                        <div class="plan-price">
-                            <span class="currency">$</span><span class="amount"><s style="font-size: 0.6em; opacity: 0.7; margin-right: 8px;">22</s>16.99</span><span class="period">/3 days</span>
-                        </div>
-                        <div class="divider"></div>
-                        <ul class="plan-features">
-                            <li><svg viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> 3 Days Access</li>
-                            <li><svg viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> Full Feature Access</li>
-                            <li><svg viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> Standard Support (24h max)</li>
-                            <li style="color: rgba(255,255,255,0.4);"><svg viewBox="0 0 20 20" style="fill: #ef4444;"><path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"/></svg> China not supported yet</li>
-                        </ul>
-                        <button class="btn-purchase add-to-cart" data-id="3day" data-name="3 Days Plan" data-price="16.99">Add to Cart</button>
-                    </div>
+            <!-- Slot counter -->
+            <div class="glass-panel" style="max-width: 780px; margin: 0 auto 3rem; padding: 1.75rem 2rem; border-radius: 16px;" data-aos="fade-up" data-aos-duration="800">
+                <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.1rem;">
+                    <span style="font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.5);">Slots taken</span>
+                    <span style="font-size: 1.6rem; font-weight: 700; font-variant-numeric: tabular-nums;"><span class="text-gradient">10</span><span style="color: rgba(255,255,255,0.35); font-size: 0.7em;"> / 50</span></span>
                 </div>
-
-                <!-- Weekly Plan -->
-                <div class="pricing-card glass-panel" id="card-weekly" data-aos="fade-up" data-aos-delay="200">
-                    <div class="card-glow"></div>
-                    <div class="card-content">
-                        <div class="plan-header">
-                            <div>
-                                <h3 class="plan-name">Weekly</h3>
-                                <p class="plan-desc">Great balance.</p>
-                            </div>
-                            <div class="plan-icon-badge">7D</div>
-                        </div>
-                        <div class="plan-price">
-                            <span class="currency">$</span><span class="amount"><s style="font-size: 0.6em; opacity: 0.7; margin-right: 8px;">28</s>21.99</span><span class="period">/week</span>
-                        </div>
-                        <div class="divider"></div>
-                        <ul class="plan-features">
-                            <li><svg viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> 7 Days Access</li>
-                            <li><svg viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> Full Feature Access</li>
-                            <li><svg viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> Standard Support (24h max)</li>
-                            <li style="color: rgba(255,255,255,0.4);"><svg viewBox="0 0 20 20" style="fill: #ef4444;"><path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"/></svg> China not supported yet</li>
-                        </ul>
-                        <button class="btn-purchase add-to-cart" data-id="weekly" data-name="Weekly Plan" data-price="21.99">Add to Cart</button>
-                    </div>
+                <div style="height: 8px; border-radius: 99px; background: rgba(255,255,255,0.08); overflow: hidden;">
+                    <div style="height: 100%; width: 20%; border-radius: 99px; background: linear-gradient(90deg, #6366f1, #a855f7);"></div>
                 </div>
+                <p style="margin: 1.1rem 0 0; font-size: 0.92rem; color: rgba(255,255,255,0.55);">
+                    <strong style="color: rgba(255,255,255,0.9);">40 slots remain.</strong>
+                    Once all 50 are filled, applications close.
+                </p>
+            </div>
 
-                <!-- Monthly Plan -->
-                <div class="pricing-card popular glass-panel" id="card-monthly" data-aos="fade-up" data-aos-delay="300">
-                    <div class="popular-tag">MOST POPULAR</div>
+            <div class="pricing-container pricing-private">
+                <!-- Entry -->
+                <div class="pricing-card popular glass-panel" id="card-entry" data-aos="fade-up" data-aos-delay="100">
+                    <div class="popular-tag">SECURES YOUR SLOT</div>
                     <div class="card-glow"></div>
                     <div class="card-content">
                         <div class="plan-header">
                             <div>
-                                <h3 class="plan-name">Monthly</h3>
-                                <p class="plan-desc">Maximum value.</p>
+                                <h3 class="plan-name">Entry</h3>
+                                <p class="plan-desc">One-time, to join.</p>
                             </div>
-                            <div class="plan-icon-badge accent">30D</div>
+                            <div class="plan-icon-badge accent">1/50</div>
                         </div>
                         <div class="plan-price">
-                            <span class="currency">$</span><span class="amount"><s style="font-size: 0.6em; opacity: 0.7; margin-right: 8px;">65</s>45.99</span><span class="period">/month</span>
+                            <span class="currency">$</span><span class="amount">400</span><span class="period">one-time</span>
                         </div>
                         <div class="divider"></div>
                         <ul class="plan-features">
-                            <li><svg viewBox="0 0 20 20" class="accent-svg"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> 30 Days Access</li>
+                            <li><svg viewBox="0 0 20 20" class="accent-svg"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> One of only 50 private slots</li>
                             <li><svg viewBox="0 0 20 20" class="accent-svg"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> Full Feature Access</li>
-                            <li><svg viewBox="0 0 20 20" class="accent-svg"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> Priority Support (max 2h)</li>
-                            <li><svg viewBox="0 0 20 20" class="accent-svg"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> Save 65% Over Daily</li>
+                            <li><svg viewBox="0 0 20 20" class="accent-svg"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> Priority Support</li>
+                            <li><svg viewBox="0 0 20 20" class="accent-svg"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> Your slot is held while subscribed</li>
                             <li style="color: rgba(255,255,255,0.4);"><svg viewBox="0 0 20 20" style="fill: #ef4444;"><path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"/></svg> China not supported yet</li>
                         </ul>
-                        
-
-                        <button class="btn-primary btn-purchase add-to-cart" data-id="monthly" data-name="Monthly Plan" data-price="45.99">Add Standard ($45.99)</button>
+                        <a href="https://discord.gg/ybzqWHPaFH" target="_blank" rel="noopener" class="btn-primary btn-purchase" style="display: block; text-align: center; text-decoration: none;">Apply via Ticket</a>
                     </div>
                 </div>
 
+                <!-- Resubscription -->
+                <div class="pricing-card glass-panel" id="card-resub" data-aos="fade-up" data-aos-delay="200">
+                    <div class="card-glow"></div>
+                    <div class="card-content">
+                        <div class="plan-header">
+                            <div>
+                                <h3 class="plan-name">Resubscription</h3>
+                                <p class="plan-desc">After your entry.</p>
+                            </div>
+                            <div class="plan-icon-badge">30D</div>
+                        </div>
+                        <div class="plan-price">
+                            <span class="currency">$</span><span class="amount">125</span><span class="period">/month</span>
+                        </div>
+                        <div class="divider"></div>
+                        <ul class="plan-features">
+                            <li><svg viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> Keeps your slot active</li>
+                            <li><svg viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> Full Feature Access</li>
+                            <li><svg viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> Priority Support</li>
+                            <li><svg viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> No entry fee again</li>
+                            <li style="color: rgba(255,255,255,0.4);"><svg viewBox="0 0 20 20" style="fill: #ef4444;"><path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"/></svg> Existing members only</li>
+                        </ul>
+                        <a href="https://discord.gg/ybzqWHPaFH" target="_blank" rel="noopener" class="btn-purchase" style="display: block; text-align: center; text-decoration: none;">Open a Ticket</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Application process -->
+            <div class="glass-panel" style="max-width: 780px; margin: 3.5rem auto 0; padding: 2rem 2.25rem; border-radius: 16px;" data-aos="fade-up" data-aos-delay="300">
+                <h3 style="margin: 0 0 1.5rem; font-size: 1.25rem;">How to apply</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.75rem;">
+                    <div>
+                        <div style="font-size: 0.72rem; letter-spacing: 0.16em; color: rgba(255,255,255,0.4); margin-bottom: 0.5rem;">STEP 1</div>
+                        <p style="margin: 0; font-size: 0.94rem; color: rgba(255,255,255,0.72); line-height: 1.6;">Open a ticket in our Discord and tell us you want to apply.</p>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.72rem; letter-spacing: 0.16em; color: rgba(255,255,255,0.4); margin-bottom: 0.5rem;">STEP 2</div>
+                        <p style="margin: 0; font-size: 0.94rem; color: rgba(255,255,255,0.72); line-height: 1.6;">Every application is reviewed manually. ID verification may be required before approval.</p>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.72rem; letter-spacing: 0.16em; color: rgba(255,255,255,0.4); margin-bottom: 0.5rem;">STEP 3</div>
+                        <p style="margin: 0; font-size: 0.94rem; color: rgba(255,255,255,0.72); line-height: 1.6;">Once approved, the $400 entry fee secures your slot and you receive your key and loader access.</p>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -360,14 +341,14 @@
             <div class="faq-container">
                 <div class="faq-item glass-panel" data-aos="fade-up" data-aos-delay="100">
                     <button class="faq-question">
-                        <span>How quickly do I receive my key?</span>
+                        <span>How do I get access?</span>
                         <div class="faq-icon">
                             <svg class="chevron" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg>
                         </div>
                     </button>
                     <div class="faq-answer">
                         <div class="faq-answer-inner">
-                            <p>All purchases are currently handled through our Discord. Open a ticket and a staff member will take care of your order and hand over your key and loader access as fast as we can — usually within minutes.</p>
+                            <p>Column is fully private, so access starts with an application rather than a purchase. Open a ticket in our Discord to apply. Every application is reviewed manually and ID verification may be required. Once you are approved and the entry fee is settled, a staff member hands over your key and loader access.</p>
                         </div>
                     </div>
                 </div>
@@ -415,7 +396,7 @@
                     <h4>Quick Links</h4>
                     <a href="#home">Home</a>
                     <a href="#features">Features</a>
-                    <a href="#pricing">Pricing</a>
+                    <a href="#pricing">Access</a>
                 </div>
                 <div class="footer-links">
                     <h4>Legal</h4>

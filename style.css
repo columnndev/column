@@ -1369,3 +1369,47 @@ footer {
         max-width: 1400px;
     }
 }
+
+
+/* ── Private access layout ──────────────────────────────────────────────────
+   The base .pricing-container is a 4-up grid built for the old Daily/3-Day/
+   Weekly/Monthly plans. There are only two cards now, so that grid left them
+   at quarter width hugging the left edge. Scoped to .pricing-private so the
+   base rule is untouched.
+
+   These sit after the existing media queries AND carry two classes, so they
+   beat the responsive .pricing-container overrides on specificity rather than
+   relying on source order. That is why the mobile case is repeated here — the
+   old mobile rule can no longer reach these cards. */
+.pricing-container.pricing-private {
+    grid-template-columns: repeat(2, minmax(0, 360px));
+    justify-content: center;
+    max-width: 780px;
+    margin: 0 auto;
+    gap: 28px;
+}
+
+.pricing-container.pricing-private .pricing-card {
+    padding: 2.75rem 2.25rem;
+}
+
+/* The entry card is the one we want people to land on. */
+.pricing-container.pricing-private .pricing-card.popular {
+    transform: translateY(-8px);
+}
+
+.pricing-container.pricing-private .pricing-card.popular:hover {
+    transform: translateY(-12px);
+}
+
+@media (max-width: 900px) {
+    .pricing-container.pricing-private {
+        grid-template-columns: minmax(0, 420px);
+        max-width: 420px;
+        gap: 22px;
+    }
+    .pricing-container.pricing-private .pricing-card.popular,
+    .pricing-container.pricing-private .pricing-card.popular:hover {
+        transform: none;
+    }
+}
